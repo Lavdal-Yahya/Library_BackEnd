@@ -1,152 +1,121 @@
-Library Management System (Back-End)
+# Library Management System (Back-End)
 
-Project Overview
+## Project Overview
 
 This project is a Java EE/Spring Boot web application for managing a university library. It allows administrators, librarians, and students to interact with the system based on their roles.
 
-Features
+## Features
 
-1️⃣ Authentication & Role Management
+### 1️⃣ Authentication & Role Management
+- Secure authentication using Spring Security & JWT.
+- Three user roles: **Admin, Librarian, Student**.
 
-Secure authentication using Spring Security & JWT.
+### 2️⃣ User Management
+- Admin can add, modify, and delete librarians.
+- Users can register with required details.
 
-Three user roles: Admin, Librarian, Student.
+### 3️⃣ Book Management
+- Admins can add, edit, and delete books.
+- Users can view book details.
 
-2️⃣ User Management
+### 4️⃣ Borrowing & Returning Books
+- Students can borrow books.
+- Librarians can validate book loans and returns.
+- Book availability updates in real-time.
 
-Admin can add, modify, and delete librarians.
+### 5️⃣ Loan History
+- Students can view their loan history.
+- Admins & Librarians can view all users' loan records.
 
-Users can register with required details.
+### 6️⃣ Access Control
+- Spring Security ensures role-based access.
+- Only authorized users can access specific endpoints.
 
-3️⃣ Book Management
+## Tech Stack
 
-Admins can add, edit, and delete books.
+- **Back-end**: Spring Boot, Spring Security, Spring Data JPA
+- **Database**: H2 (In-memory) or MySQL
+- **Build Tool**: Maven
+- **API Testing**: Postman
+- **Version Control**: Git
 
-Users can view book details.
+## Setup Instructions
 
-4️⃣ Borrowing & Returning Books
+### Prerequisites
 
-Students can borrow books.
+- Java 17
+- Maven
+- Eclipse IDE
+- Apache Tomcat 10 (if needed)
+- Postman (for API testing)
 
-Librarians can validate book loans and returns.
+### Steps to Run the Project
 
-Book availability updates in real-time.
+1. Clone the repository:
 
-5️⃣ Loan History
+   ```bash
+   git clone https://github.com/your-repo/library-management.git
+   ```
 
-Students can view their loan history.
+2. Navigate to the project directory:
 
-Admins & Librarians can view all users' loan records.
+   ```bash
+   cd library-management
+   ```
 
-6️⃣ Access Control
+3. Build the project:
 
-Spring Security ensures role-based access.
+   ```bash
+   mvn clean install
+   ```
 
-Only authorized users can access specific endpoints.
+4. Run the Spring Boot application:
 
-Tech Stack
+   ```bash
+   mvn spring-boot:run
+   ```
 
-Back-end: Spring Boot, Spring Security, Spring Data JPA
+5. Access the API at `http://localhost:8080`
 
-Database: H2 (In-memory) or MySQL
+## API Endpoints
 
-Build Tool: Maven
+### Authentication
+- `POST /auth/register` - Register a new user
+- `POST /auth/login` - User login
 
-API Testing: Postman
+### User Management (Admin Only)
+- `GET /users` - View all users
+- `DELETE /users/{id}` - Delete a user
 
-Version Control: Git
+### Book Management
+- `POST /books` - Add a new book
+- `GET /books` - View all books
+- `PUT /books/{id}` - Update book details
+- `DELETE /books/{id}` - Delete a book
 
-Setup Instructions
+### Borrowing & Returning
+- `POST /loans/borrow` - Borrow a book
+- `POST /loans/return` - Return a book
+- `GET /loans/user/{id}` - View loan history
 
-Prerequisites
+## Testing the API with Postman
 
-Java 17
+1. Import API endpoints into Postman.
+2. Test authentication (register/login).
+3. Test CRUD operations for users & books.
+4. Test borrowing & returning books.
+5. Verify role-based access control.
 
-Maven
+## Next Steps
 
-Eclipse IDE
+- Implement a frontend UI with React/Angular.
+- Add email notifications for due dates.
+- Integrate with an external book database API.
 
-Apache Tomcat 10 (if needed)
-
-Postman (for API testing)
-
-Steps to Run the Project
-
-Clone the repository:
-
-git clone https://github.com/your-repo/library-management.git
-
-Navigate to the project directory:
-
-cd library-management
-
-Build the project:
-
-mvn clean install
-
-Run the Spring Boot application:
-
-mvn spring-boot:run
-
-Access the API at http://localhost:8080
-
-API Endpoints
-
-Authentication
-
-POST /auth/register - Register a new user
-
-POST /auth/login - User login
-
-User Management (Admin Only)
-
-GET /users - View all users
-
-DELETE /users/{id} - Delete a user
-
-Book Management
-
-POST /books - Add a new book
-
-GET /books - View all books
-
-PUT /books/{id} - Update book details
-
-DELETE /books/{id} - Delete a book
-
-Borrowing & Returning
-
-POST /loans/borrow - Borrow a book
-
-POST /loans/return - Return a book
-
-GET /loans/user/{id} - View loan history
-
-Testing the API with Postman
-
-Import API endpoints into Postman.
-
-Test authentication (register/login).
-
-Test CRUD operations for users & books.
-
-Test borrowing & returning books.
-
-Verify role-based access control.
-
-Next Steps
-
-Implement a frontend UI with React/Angular.
-
-Add email notifications for due dates.
-
-Integrate with an external book database API.
-
-Contributing
+## Contributing
 
 Contributions are welcome! Fork the repo and submit a pull request.
 
-License
+## License
 
-This project is licensed under the MIT License.
-
+This project is licensed under the **MIT License**.
