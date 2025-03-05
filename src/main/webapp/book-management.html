@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management - Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .nav-link {
+            @apply px-3 py-2 text-sm font-medium rounded-md transition-colors;
+        }
+        .nav-link:not(.active) {
+            @apply text-gray-500 hover:text-gray-700 hover:bg-gray-50;
+        }
+        .nav-link.active {
+            @apply bg-primary-50 text-primary-600;
+        }
+        .form-input {
+            @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm transition-colors;
+        }
+        .form-label {
+            @apply block text-sm font-medium text-gray-700;
+        }
+        .table-header {
+            @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+        }
+        .table-cell {
+            @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <h1 class="text-3xl font-bold text-gray-900">Book Management</h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-gray-600">
+                        Role: <span id="userRole" class="font-medium text-primary-600">Loading...</span>
+                    </span>
+                    <button 
+                        onclick="logout()" 
+                        class="text-sm bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                    >
+                        Logout
+                    </button>
+                </div>
+            </div>
+            <nav class="flex space-x-4 py-4">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="user-management.html" class="nav-link">User Management</a>
+                <a href="book-management.html" class="nav-link active">Book Management</a>
+                <a href="borrow-history.html" class="nav-link">Borrow History</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- View Books (Visible to Everyone) -->
+    <div class="mb-8">
+        <button 
+            onclick="listBooks()" 
+            data-action="list-books"
+            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+        >
+            View All Books
+        </button>
+    </div>
+
+    <div id="bookListContainer" class="bg-white shadow rounded-lg hidden overflow-hidden">
+        <!-- Book list will be displayed here -->
+    </div>
+
+    <!-- Book Management (Visible ONLY to Admins) -->
+    <div id="bookManagementSection" class="hidden">
+        <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- Add Book Form -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-6">Add Book</h3>
+                <form id="addBookForm" class="space-y-4">
+                    <div>
+                        <label for="bookIsbn" class="form-label">ISBN</label>
+                        <input type="text" id="bookIsbn" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="bookTitle" class="form-label">Title</label>
+                        <input type="text" id="bookTitle" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="bookAuthor" class="form-label">Author</label>
+                        <input type="text" id="bookAuthor" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="bookYear" class="form-label">Year</label>
+                        <input type="number" id="bookYear" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="bookCopies" class="form-label">Copies</label>
+                        <input type="number" id="bookCopies" class="form-input" required>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">
+                        Add Book
+                    </button>
+                </form>
+            </div>
+
+            <!-- Edit Book Form -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-6">Edit Book</h3>
+                <form id="editBookForm" class="space-y-4">
+                    <div>
+                        <label for="editBookIsbn" class="form-label">ISBN</label>
+                        <input type="text" id="editBookIsbn" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="editBookTitle" class="form-label">New Title</label>
+                        <input type="text" id="editBookTitle" class="form-input">
+                    </div>
+                    <div>
+                        <label for="editBookAuthor" class="form-label">New Author</label>
+                        <input type="text" id="editBookAuthor" class="form-input">
+                    </div>
+                    <div>
+                        <label for="editBookYear" class="form-label">New Year</label>
+                        <input type="number" id="editBookYear" class="form-input">
+                    </div>
+                    <div>
+                        <label for="editBookCopies" class="form-label">New Copies</label>
+                        <input type="number" id="editBookCopies" class="form-input">
+                    </div>
+                    <button type="submit" class="w-full bg-primary-600 text-white py-2 px-4 rounded-md hover:bg-primary-700">
+                        Update Book
+                    </button>
+                </form>
+            </div>
+
+            <!-- Delete Book Form -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-6">Delete Book</h3>
+                <form id="deleteBookForm" class="space-y-4">
+                    <div>
+                        <label for="deleteBookIsbn" class="form-label">ISBN</label>
+                        <input type="text" id="deleteBookIsbn" class="form-input" required>
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">
+                        Delete Book
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <footer class="bg-white border-t mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500">&copy; 2025 Library Management System</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
